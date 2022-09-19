@@ -6,6 +6,6 @@
 
 Install python 
 1) pip install -r requirements.txt
-Generate data
 2) python generate_data.py
+
 Data generates for about 20 minutes...
