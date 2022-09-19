@@ -2,3 +2,5 @@
 sqlalchemy
 # Date generation library. Use sqlalchemy for model access
 factory-boy
+# For arrays functions
+numpy

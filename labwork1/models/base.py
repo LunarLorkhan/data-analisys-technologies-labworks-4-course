@@ -5,6 +5,11 @@ Base = declarative_base()
 
 
 class BaseIdModel(Base):
+    """Abstract base model.
+
+    Contains id field.
+
+    """
     __abstract__ = True
 
     id = Column(Integer, primary_key=True)

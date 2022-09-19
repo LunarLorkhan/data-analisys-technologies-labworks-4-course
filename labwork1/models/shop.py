@@ -5,6 +5,7 @@ from .base import BaseIdModel
 
 
 class Shop(BaseIdModel):
+    """Shop model."""
     __tablename__ = 'shop'
 
     name = Column(String(length=256), nullable=False)

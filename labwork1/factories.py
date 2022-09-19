@@ -2,26 +2,14 @@ import factory
 from factory.alchemy import SQLAlchemyModelFactory
 from factory.fuzzy import FuzzyAttribute, FuzzyChoice, FuzzyInteger
 from faker import Faker
-from sqlalchemy.orm import scoped_session, sessionmaker
 
-from engine import engine
-from models import (
-    Category,
-    CategoryProductAssociation,
-    Order,
-    OrderProductAssociation,
-    OrderStatusEnum,
-    Producer,
-    Product,
-    ProductWarehouseAssociation,
-    Seller,
-    Shop,
-    Warehouse,
-)
+from models import (Category, CategoryProductAssociation, Order,
+                    OrderProductAssociation, OrderStatusEnum, Producer,
+                    Product, ProductWarehouseAssociation, Seller, Shop,
+                    Warehouse)
+from session import session
 
 fake = Faker()
-
-session = scoped_session(sessionmaker(bind=engine))
 
 
 class SellerFactory(SQLAlchemyModelFactory):
@@ -34,7 +22,6 @@ class SellerFactory(SQLAlchemyModelFactory):
 
 class ProducerFactory(SQLAlchemyModelFactory):
     name = FuzzyAttribute(lambda: f'Producer: {fake.company()}')
-    description = fake.text()
     address = fake.address()
 
     class Meta:
@@ -45,7 +32,6 @@ class ProducerFactory(SQLAlchemyModelFactory):
 class ProductFactory(SQLAlchemyModelFactory):
     name = FuzzyAttribute(lambda: f'Product: {fake.name()}')
     price = FuzzyInteger(low=10000, high=1000000)
-    description = fake.text()
     amount = FuzzyInteger(low=0, high=100)
 
     producer = factory.SubFactory(ProducerFactory)
@@ -58,7 +44,6 @@ class ProductFactory(SQLAlchemyModelFactory):
 
 class CategoryFactory(SQLAlchemyModelFactory):
     name = FuzzyAttribute(lambda: f'Category: {fake.name()}')
-    description = fake.text()
 
     class Meta:
         model = Category

@@ -5,6 +5,7 @@ from .base import BaseIdModel
 
 
 class Product(BaseIdModel):
+    """Product model."""
     __tablename__ = "product"
 
     name = Column(String(length=256), nullable=False)
@@ -17,6 +18,7 @@ class Product(BaseIdModel):
 
 
 class Seller(BaseIdModel):
+    """Seller model."""
     __tablename__ = "seller"
 
     name = Column(String(length=256), nullable=False)
@@ -27,6 +29,7 @@ class Seller(BaseIdModel):
 
 
 class Producer(BaseIdModel):
+    """Producer model."""
     __tablename__ = "producer"
 
     name = Column(String(length=256), nullable=False)

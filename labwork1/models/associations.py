@@ -5,6 +5,7 @@ from .base import Base, BaseIdModel
 
 
 class OrderProductAssociation(BaseIdModel):
+    """Intermediate model between order and product."""
     __tablename__ = 'orderproduct'
 
     amount = Column(Integer, default=1, nullable=False)
@@ -17,6 +18,7 @@ class OrderProductAssociation(BaseIdModel):
 
 
 class ProductWarehouseAssociation(Base):
+    """Intermediate model between product and warehouse."""
     __tablename__ = 'productwarehouse'
 
     warehouse_id = Column(ForeignKey('warehouse.id'), primary_key=True)
@@ -27,6 +29,7 @@ class ProductWarehouseAssociation(Base):
 
 
 class CategoryProductAssociation(Base):
+    """Intermediate model between category and product."""
     __tablename__ = 'categoryproduct'
 
     category_id = Column(ForeignKey('product.id'), primary_key=True)
