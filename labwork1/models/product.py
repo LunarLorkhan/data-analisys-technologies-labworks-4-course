@@ -13,29 +13,10 @@ class Product(BaseIdModel):
     description = Column(String(length=65536))
     amount = Column(Integer, nullable=False, default=0)
 
-    seller = relationship('Seller', back_populates='product', uselist=False)
-    producer = relationship('Producer', back_populates='product', uselist=False)
+    seller_id = Column(Integer, ForeignKey('seller.id'))
+    producer_id = Column(Integer, ForeignKey('producer.id'))
+    category_id = Column(Integer, ForeignKey('category.id'))
 
-
-class Seller(BaseIdModel):
-    """Seller model."""
-    __tablename__ = "seller"
-
-    name = Column(String(length=256), nullable=False)
-
-    # Foreign keys
-    product_id = Column(Integer, ForeignKey('product.id'))
-    product = relationship('Product', back_populates='seller', uselist=False)
-
-
-class Producer(BaseIdModel):
-    """Producer model."""
-    __tablename__ = "producer"
-
-    name = Column(String(length=256), nullable=False)
-    description = Column(String(length=2048))
-    address = Column(String(length=256), nullable=False)
-
-    # Foreign keys
-    product_id = Column(Integer, ForeignKey('product.id'))
-    product = relationship('Product', back_populates='producer', uselist=False)
+    seller = relationship('Seller')
+    producer = relationship('Producer')
+    category = relationship('Category')

@@ -9,3 +9,5 @@ Install python
 2) python generate_data.py
 
 Data generates for about 20 minutes...
+
+*NOTE*: Make sure You have free 4 GB RAM for script

@@ -1,5 +1,4 @@
 import random
-from collections import defaultdict
 from itertools import cycle
 
 import numpy as np
@@ -19,61 +18,38 @@ def generate_data(session: SessionTransaction):
 
     """
     categories = CategoryFactory.create_batch(size=30)
-    products = ProductFactory.create_batch(20000)
+    producers = ProducerFactory.create_batch(size=15)
 
-    # generate for product 1 - 4 category
-    for product in products:
-        caterories_for_product = random.choices(categories, k=random.randint(1, 4))
-        for category_for_product in caterories_for_product:
-            CategoryProductAssociation(
+    products = []
+    for _, category, producer in zip(range(10000), cycle(categories), cycle(producers)):
+        products.append(
+            ProductFactory(
+                category=category,
+                producer=producer,
+            ),
+        )
+    
+    shops = ShopFactory.create_batch(15)
+    
+    orders = []
+    order_statuses = list(OrderStatusEnum)
+    for _, shop in zip(range(1000), cycle(shops)):
+        orders.append(
+            OrderFactory(
+                shop=shop,
+                status= random.choice(order_statuses)
+            ),
+        )
+    
+    for order in orders:
+        for _ in range(random.randint(1, 15)):
+            product = random.choice(products)
+            products.remove(product)
+            OrderProductFactory(
+                orders=order,
                 products=product,
-                categories=category_for_product,
             )
 
-    warehouse_product_dict = defaultdict(list)
-    warehouses = WarehouseFactory.create_batch(5)
-    # link warehouses and products
-    for warehouse in warehouses:
-        splitted_products = np.array_split(products, 5)
-        for products_sample in splitted_products:
-            for product in products_sample:
-                ProductWarehouseAssociation(
-                    products=product,
-                    warehouses=warehouse,
-                )
-                warehouse_product_dict[warehouse].append(product)
-
-    shops = ShopFactory.create_batch(15)
-
-    # get one warehouse for each shop
-    # Example:
-    # >>> warehouse = ['one', 'two', 'three']
-    # >>> shops = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    # >>> shop_warehouses = zip(cycle(warehouses), shops)
-    # >>> shop_warehouses
-    # [
-    #   ('one', 1), ('two', 2), ('three', 3),
-    #   ('one', 4), ('two', 5), ('three', 6),
-    #   ('one', 7), ('two', 8), ('three', 9)
-    # ]
-    shop_warehouses = zip(cycle(warehouses), shops)
-    # generate 300 orders per shop
-    for warehouse, shop in shop_warehouses:
-        orders = OrderFactory.create_batch(
-            300,
-            shop=shop,
-            warehouse=warehouse,
-        )
-
-        # fill products for each order
-        for order in orders:
-            products = warehouse_product_dict[warehouse]
-            for product in random.choices(products, k=random.randint(1, len(products))):
-                OrderProductAssociation(
-                    products=product,
-                    orders=order,
-                    amount=random.randint(1000, 10000),
-                )
 
 
 if __name__ == '__main__':
