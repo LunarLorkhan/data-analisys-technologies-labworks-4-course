@@ -26,19 +26,20 @@ def generate_data(session: SessionTransaction):
             ProductFactory(
                 category=category,
                 producer=producer,
-            ),
+            )
         )
     
-    shops = ShopFactory.create_batch(15)
+    shops = ShopFactory.create_batch(size=15)
     
     orders = []
     order_statuses = list(OrderStatusEnum)
     for _, shop in zip(range(1000), cycle(shops)):
+        status = random.choice(order_statuses).name
         orders.append(
             OrderFactory(
                 shop=shop,
-                status= random.choice(order_statuses)
-            ),
+                status=status,
+            )
         )
     
     for order in orders:
@@ -49,7 +50,6 @@ def generate_data(session: SessionTransaction):
                 orders=order,
                 products=product,
             )
-
 
 
 if __name__ == '__main__':
